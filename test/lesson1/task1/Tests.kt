@@ -82,6 +82,8 @@ class Tests {
         assertEquals(8, thirdDigit(3801))
         assertEquals(1, thirdDigit(100))
         assertEquals(0, thirdDigit(1000))
+        assertEquals(2, thirdDigit(200))
+        assertEquals(8, thirdDigit(19216811))
     }
 
     @Test
@@ -97,6 +99,9 @@ class Tests {
         assertEquals(133.1, accountInThreeYears(100, 10), 1e-2)
         assertEquals(1.0, accountInThreeYears(1, 0), 1e-2)
         assertEquals(104.0, accountInThreeYears(13, 100), 1e-2)
+        assertEquals(266.2, accountInThreeYears(200, 10), 1e-2)
+        assertEquals(888.0, accountInThreeYears(111, 100), 1e-2)
+        assertEquals(5324.0, accountInThreeYears(4000, 10), 1e-2)
     }
 
     @Test
@@ -104,5 +109,7 @@ class Tests {
     fun numberRevert() {
         assertEquals(874, numberRevert(478))
         assertEquals(201, numberRevert(102))
+        assertEquals(333, numberRevert(333))
+        assertEquals(899, numberRevert(998))
     }
 }

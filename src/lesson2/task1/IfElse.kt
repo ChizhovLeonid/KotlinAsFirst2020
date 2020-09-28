@@ -95,7 +95,6 @@ fun timeForHalfWay(
         h1 < r1 -> h1 / v1
         h1 < r1 + r2 -> t1 + (h1 - r1) / v2
         else -> t1 + t2 + (h1 - r2 - r1) / v3
-
     }
 }
 
@@ -134,10 +133,10 @@ fun rookOrBishopThreatens(
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
 ): Int = when {
-    (abs(bishopX - kingX) == abs(bishopY - kingY)) && (kingX == rookX || kingY == rookY) -> 3
-    else -> {
-        if (abs(bishopX - kingX) == abs(bishopY - kingY)) 2 else if (kingX == rookX || kingY == rookY) 1 else 0
-    }
+    abs(bishopX - kingX) == abs(bishopY - kingY) && (kingX == rookX || kingY == rookY) -> 3
+    abs(bishopX - kingX) == abs(bishopY - kingY) -> 2
+    kingX == rookX || kingY == rookY -> 1
+    else -> 0
 }
 
 /**
@@ -149,7 +148,8 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    if (a + b > c && a + c > b && b + c > a) {
+    return if (a + b <= c || a + c <= b || b + c <= a) -1
+    else {
         val alp = acos((sqr(a) + sqr(c) - sqr(b)) / (2 * a * c)) * 180 / PI
         val bet = acos((sqr(a) + sqr(b) - sqr(c)) / (2 * a * b)) * 180 / PI
         val gam = acos((sqr(b) + sqr(c) - sqr(a)) / (2 * c * b)) * 180 / PI
@@ -160,7 +160,6 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
             else -> -1
         }
     }
-    return -1
 }
 
 /**
@@ -173,7 +172,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     return when {
-        c in (a + 1)..b && b < d -> b - c
+        c in a + 1..b && b < d -> b - c
         a >= c && b < d -> b - a
         a >= c && b >= d && a <= d -> d - a
         a < c && b >= d -> d - c
