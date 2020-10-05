@@ -74,7 +74,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int {
-    var count: Int = 0
+    var count = 0
     var num: Int = n
     do {
         count += 1
@@ -91,8 +91,8 @@ fun digitNumber(n: Int): Int {
  */
 fun fib(n: Int): Int {
     var fiboBuff: Int
-    var fiboNow: Int = 1
-    var fiboPast: Int = 0
+    var fiboNow = 1
+    var fiboPast = 0
     repeat(n - 1)
     {
         fiboBuff = fiboNow + fiboPast
@@ -108,7 +108,7 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var secCount = sqrt(n * 1.0).toInt()
+    val secCount = sqrt(n * 1.0).toInt()
     for (del in 2..secCount) if (n % del == 0)
         return del
     return n
@@ -139,7 +139,7 @@ fun maxDivisor(n: Int): Int = n / minDivisor(n)
  */
 fun collatzSteps(x: Int): Int {
     var xNext: Int = x
-    var step: Int = 0
+    var step = 0
     while (xNext != 1) {
         xNext = if (xNext % 2 == 0) xNext / 2
         else 3 * xNext + 1
@@ -155,8 +155,8 @@ fun collatzSteps(x: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var m1: Int = m
-    var n1: Int = n
+    var m1 = m
+    var n1 = n
     while (m1 != n1) {
         if (m1 > n1) n1 += n
         else m1 += m
@@ -189,8 +189,9 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var nCount = sqrt(n * 1.0).toInt()
-    var k = (nCount * 1.0).pow(2).toInt()
+    val nCount = sqrt(n * 1.0).toInt() // тут необходимо взять корень из n и округлить его в меньшую сторону.
+    // Это можно сделать отбросив у него дробную часть, т.е. перевести это число в int
+    val k = (nCount * 1.0).pow(2).toInt() // тут получается целове число которое максимально близко к n, но меньше его
     return k >= m
 }
 

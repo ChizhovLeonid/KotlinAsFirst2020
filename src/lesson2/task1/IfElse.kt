@@ -87,10 +87,10 @@ fun timeForHalfWay(
     t2: Double, v2: Double,
     t3: Double, v3: Double
 ): Double {
-    var r1 = t1 * v1
-    var r2 = t2 * v2
-    var r3 = t3 * v3
-    var h1 = (r1 + r2 + r3) / 2
+    val r1 = t1 * v1
+    val r2 = t2 * v2
+    val r3 = t3 * v3
+    val h1 = (r1 + r2 + r3) / 2
     return when {
         h1 < r1 -> h1 / v1
         h1 < r1 + r2 -> t1 + (h1 - r1) / v2
@@ -147,18 +147,16 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int {
-    return if (a + b <= c || a + c <= b || b + c <= a) -1
-    else {
-        val alp = acos((sqr(a) + sqr(c) - sqr(b)) / (2 * a * c)) * 180 / PI
-        val bet = acos((sqr(a) + sqr(b) - sqr(c)) / (2 * a * b)) * 180 / PI
-        val gam = acos((sqr(b) + sqr(c) - sqr(a)) / (2 * c * b)) * 180 / PI
-        return when {
-            alp == 90.0 || bet == 90.0 || gam == 90.0 -> 1
-            alp > 90.0 || bet > 90.0 || gam > 90.0 -> 2
-            alp < 90.0 && bet < 90.0 && gam < 90.0 -> 0
-            else -> -1
-        }
+fun triangleKind(a: Double, b: Double, c: Double): Int = if (a + b <= c || a + c <= b || b + c <= a) -1
+else {
+    val alp = acos((sqr(a) + sqr(c) - sqr(b)) / (2 * a * c)) * 180 / PI
+    val bet = acos((sqr(a) + sqr(b) - sqr(c)) / (2 * a * b)) * 180 / PI
+    val gam = acos((sqr(b) + sqr(c) - sqr(a)) / (2 * c * b)) * 180 / PI
+    when {
+        alp == 90.0 || bet == 90.0 || gam == 90.0 -> 1
+        alp > 90.0 || bet > 90.0 || gam > 90.0 -> 2
+        alp < 90.0 && bet < 90.0 && gam < 90.0 -> 0
+        else -> -1
     }
 }
 
@@ -170,12 +168,10 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    return when {
-        c in a + 1..b && b < d -> b - c
-        a >= c && b < d -> b - a
-        a >= c && b >= d && a <= d -> d - a
-        a < c && b >= d -> d - c
-        else -> -1
-    }
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
+    c in a + 1..b && b < d -> b - c
+    a >= c && b < d -> b - a
+    a >= c && b >= d && a <= d -> d - a
+    a < c && b >= d -> d - c
+    else -> -1
 }
