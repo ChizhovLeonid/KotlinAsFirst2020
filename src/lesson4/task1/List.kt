@@ -3,7 +3,9 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 import kotlin.math.sqrt
+import kotlin.collections.MutableList as MutableList1
 
 // Урок 4: списки
 // Максимальное количество баллов = 12
@@ -65,7 +67,7 @@ fun negativeList(list: List<Int>): List<Int> {
  *
  * Изменить знак для всех положительных элементов списка
  */
-fun invertPositives(list: MutableList<Int>) {
+fun invertPositives(list: MutableList1<Int>) {
     for (i in 0 until list.size) {
         val element = list[i]
         if (element > 0) {
@@ -120,14 +122,20 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = TODO()
+fun abs(v: List<Double>): Double {
+    var g = 0.0
+    for (xx in v.indices) {
+        g += sqr(v[xx])
+    }
+    return sqrt(g)
+}
 
 /**
  * Простая (2 балла)
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = TODO()
+fun mean(list: List<Double>): Double = if (list.isNotEmpty()) list.sum() / list.size else 0.0
 
 /**
  * Средняя (3 балла)
@@ -137,7 +145,15 @@ fun mean(list: List<Double>): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = TODO()
+fun center(list: MutableList1<Double>): MutableList1<Double> {
+    return if (list.isNotEmpty()) {
+        val f = list.sum() / list.size
+        for (xx in list.indices) {
+            list[xx] -= f
+        }
+        list
+    } else list
+}
 
 /**
  * Средняя (3 балла)
@@ -168,7 +184,7 @@ fun polynom(p: List<Int>, x: Int): Int = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
+fun accumulate(list: MutableList1<Int>): MutableList1<Int> = TODO()
 
 /**
  * Средняя (3 балла)
@@ -241,7 +257,21 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    var num = n
+    val th = listOf("", "M", "MM", "MMM")
+    val hund = listOf("", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM")
+    val ten = listOf("", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC")
+    val un = listOf("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX")
+    val a = (th[num / 1000])
+    num %= 1000
+    val b = (hund[num / 100])
+    num %= 100
+    val c = (ten[num / 10])
+    num %= 10
+    val d = (un[num])
+    return a + b + c + d
+}
 
 /**
  * Очень сложная (7 баллов)
