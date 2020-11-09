@@ -188,17 +188,6 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
 
 /**
- * Средняя (3 балла)
- *
- * Для заданного набора символов определить, можно ли составить из него
- * указанное слово (регистр символов игнорируется)
- *
- * Например:
- *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
- */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
-
-/**
  * Средняя (4 балла)
  *
  * Найти в заданном списке повторяющиеся элементы и вернуть
@@ -210,7 +199,26 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    var quant: Int
+    val result = mutableMapOf<String, Int>()
+    for (cell in list.toSet()) {
+        quant = list.count { aop: String -> aop == cell }
+        if (quant != 1) result[cell] = quant
+    }
+    return result
+}
+
+/**
+ * Средняя (3 балла)
+ *
+ * Для заданного набора символов определить, можно ли составить из него
+ * указанное слово (регистр символов игнорируется)
+ *
+ * Например:
+ *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
+ */
+fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
 
 /**
  * Средняя (3 балла)
