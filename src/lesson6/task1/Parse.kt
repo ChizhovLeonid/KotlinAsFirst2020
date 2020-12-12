@@ -183,7 +183,22 @@ fun mostExpensive(description: String): String = TODO()
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int {
+    val rgx = Regex("""^M{0,3}(CM)?D{0,3}(CD)?C{0,3}(XC)?L{0,3}(XL)?X{0,3}(IX)?V{0,3}(IV)?I{0,3}${'$'}""")
+    if (roman.isEmpty() || !roman.matches(rgx)) return -1
+    var res = 0
+    val num = mapOf('I' to 1, 'V' to 5, 'X' to 10, 'L' to 50, 'C' to 100, 'D' to 500, 'M' to 1000)
+    for (j in 0 until roman.length - 1) {
+        val firPart = num.getValue(roman[j])
+        val secPart = num.getValue(roman[j + 1])
+        if (firPart < secPart) {
+            res -= firPart
+        } else
+            res += firPart
+    }
+    res += num.getValue(roman.last())
+    return res
+}
 
 /**
  * Очень сложная (7 баллов)
@@ -221,4 +236,52 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun computeDeviceCells(cells: Int, comm: String, limit: Int): List<Int> {
+    val rgx = Regex("""^[> <+\-\[\]]+$""")
+    if (!rgx.matches(comm)) throw IllegalArgumentException()
+    if (Regex("""\[""").findAll(comm).toList().size != Regex("""]""").findAll(comm).toList().size)
+        throw IllegalArgumentException()
+    val lisCell = MutableList(cells) { 0 }
+    var cellIndx = cells / 2
+    var commIndx = 0
+    var res = 0
+    var cnt = 0
+
+    fun first(): Int {
+        var j = commIndx - 1
+        while (j >= 0) {
+            when (comm[j]) {
+                ']' -> cnt++
+                '[' -> if (cnt > 0) cnt-- else return j
+            }
+            j--
+        }
+        return comm.length / 2
+    }
+
+    fun sec(): Int {
+        var i = commIndx + 1
+        while (i < comm.length) {
+            when (comm[i]) {
+                '[' -> cnt++
+                ']' -> if (cnt > 0) cnt-- else return i
+            }
+            i++
+        }
+        return 0
+    }
+
+    while (commIndx < comm.length && res < limit) {
+        when (comm[commIndx]) {
+            '[' -> if (lisCell[cellIndx] == 0) commIndx = sec()
+            ']' -> if (lisCell[cellIndx] != 0) commIndx = first()
+            '+' -> lisCell[cellIndx]++
+            '-' -> lisCell[cellIndx]--
+            '>' -> if (cellIndx < cells - 1) cellIndx++ else throw IllegalStateException()
+            '<' -> if (cellIndx > 0) cellIndx-- else throw IllegalStateException()
+        }
+        res++
+        commIndx++
+    }
+    return lisCell
+}
