@@ -298,4 +298,54 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun transform(
+    m: Int, listFirs: List<String>, listSec: List<String>,
+    listThrd: List<String>, list4: List<String>
+): CharSequence {
+    val result = StringBuilder()
+    result.append(listFirs[m / 100])
+    if ((m % 100 > 10) && (m % 100 < 20)) {
+        result.append(listSec[m % 10])
+    } else {
+        result.append(listThrd[m % 100 / 10])
+        result.append(list4[m % 10])
+    }
+    return result
+}
+
+fun russian(n: Int): CharSequence {
+    val res = StringBuilder()
+    val units = listOf(
+        "", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять"
+    )
+    val unitsIskl = listOf(
+        "", "одна ", "две ", "три ", "четыре ", "пять ", "шесть ", "семь ", "восемь ", "девять "
+    )
+    val tens = listOf(
+        "", "десять ", "двадцать ", "тридцать ", "сорок ", "пятьдесят ", "шестьдесят ",
+        "семьдесят ", "восемьдесят ", "девяносто "
+    )
+    val tensIskl = listOf(
+        "", "одиннадцать ", "двенадцать ", "тринадцать ", "четырнадцать ", "пятнадцать ",
+        "шестнадцать ", "семнадцать ", "восемнадцать ", "девятнадцать "
+    )
+    val hndrds = listOf(
+        "", "сто ", "двести ", "триста ", "четыреста ", "пятьсот ", "шестьсот ",
+        "семьсот ", "восемьсот ", "девятьсот "
+    )
+    res.append(transform(n / 1000, hndrds, tensIskl, tens, unitsIskl))
+    if (n / 1000 != 0) {
+        val end = n / 1000 % 100
+        if (end in 11..19) {
+            res.append("тысяч ")
+        } else {
+            when (end % 10) {
+                0, 5, 6, 7, 8, 9 -> res.append("тысяч ")
+                1 -> res.append("тысяча ")
+                else -> res.append("тысячи ")
+            }
+        }
+    }
+    res.append(transform(n % 1000, hndrds, tensIskl, tens, units))
+    return res.toString().trim()
+}
