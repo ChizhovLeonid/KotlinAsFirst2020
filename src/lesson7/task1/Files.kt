@@ -4,6 +4,8 @@ package lesson7.task1
 
 import java.io.File
 import java.lang.Integer.max
+import java.lang.Math.abs
+import java.lang.IllegalArgumentException
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -519,3 +521,70 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     TODO()
 }
 
+//Индивидуальное задание
+fun queen(inputName: String): List<Pair<Int, Char>> {
+    //Так же возможен вывод в Map
+    val result = mutableListOf<Pair<Int, Char>>()
+    //val result = mutableMapOf<Pair<Int, Char>>()
+    val regex = Regex("""([P.]{8}\r\n){7}[P.]{8}""")
+    val input = File(inputName).readText()
+    if (!input.matches(regex)) throw IllegalArgumentException()
+    val board = Array(8) { Array(8) { '~' } }
+    val notation = mapOf(0 to 'A', 1 to 'B', 2 to 'C', 3 to 'D', 4 to 'E', 5 to 'F', 6 to 'G', 7 to 'H')
+    var n = 0
+    for (i in 0..7) {
+        for (j in 0..7) {
+            board[i][j] = input[n]
+            n++
+        }
+    }
+
+    fun locking(a: Int, b: Int) {
+        for (k in 0..7) {
+            if (k != b) board[a][k] = 'X'
+            if (k != a) board[k][b] = 'X'
+        }
+        for (k in 0 until a) {
+            for (l in 0 until b) {
+                if (abs(a - k) == abs(b - l)) board[k][l] = 'X'
+            }
+        }
+        for (k in a + 1..7) {
+            for (l in b + 1..7) {
+                if (abs(a - k) == abs(b - l)) board[k][l] = 'X'
+            }
+        }
+    }
+
+    for (i in 0..7) {
+        for (j in 0..7) {
+            if (board[i][j] == 'P') locking(i, j)
+        }
+    }
+    for (i in 0..7) {
+        if (i % 2 == 0) {
+            for (j in 0..7) {
+                if (board[i][j] == '.') {
+                    board[i][j] = 'Q'
+                    locking(i, j)
+                }
+            }
+        } else {
+            for (j in 7 downTo 0) {
+                if (board[i][j] == '.') {
+                    board[i][j] = 'Q'
+                    locking(i, j)
+                }
+            }
+        }
+    }
+    for (i in 0..7) {
+        for (j in 0..7) {
+            if (board[i][j] == 'Q') {
+                result.add(i + 1 to notation[j]!!)
+                //result[i + 1] = notation[j]!!
+            }
+        }
+    }
+    return result
+}

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import java.io.File
+import org.junit.jupiter.api.Assertions.assertThrows
 
 class Tests {
 
@@ -440,5 +441,25 @@ Basic, Ruby, Swift.
         )
 
         File("temp.txt").delete()
+    }
+
+    @Test
+    fun queen() {
+        val list = listOf(2 to 'H', 3 to 'B', 4 to 'G', 5 to 'C', 7 to 'D')
+        assertEquals(
+            list,
+            queen("input/queen1.txt")
+        )
+        assertEquals(
+            list,
+            queen("input/queen2.txt")
+        )
+        assertEquals(
+            list,
+            queen("input/queen3.txt")
+        )
+        assertThrows(IllegalArgumentException::class.java) {
+            queen("input/queen4.txt")
+        }
     }
 }
